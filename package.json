@@ -1,0 +1,19 @@
+{
+  "name": "node-sybase",
+  "version": "1.0.0",
+  "description": "a node sybase imitate MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sybase",
+    "dbsybase"
+  ],
+  "author": "huangbinglong & wuhao",
+  "license": "ISC",
+  "dependencies": {
+    "generic-pool": "^3.1.7",
+    "sybase": "^1.2.1"
+  }
+}
