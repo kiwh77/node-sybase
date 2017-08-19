@@ -1,6 +1,6 @@
 {
   "name": "node-sybase",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "sybasedb for node imitate MongoDB",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,10 @@
     "sybase",
     "dbsybase"
   ],
+  "repository" : {
+    "type": "git",
+    "location": "https://github.com/kiwh77/node-sybase.git" 
+  },
   "author": "huangbinglong & wuhao",
   "license": "ISC",
   "dependencies": {
