@@ -9,53 +9,77 @@
 var genericPool = require('generic-pool');
 var DbDriver = require('sybase');
 
-const factory = {
-    create: function(){
-        return new Promise(function(resolve, reject){
+function DBPool(opts) {
+
+    if (!opts.SYBASE_HOST || !opts.SYBASE_PORT) {
+        throw new Error('Sybase DB params lacked!')
+    }
+
+    const that = this;
+
+    function _create() {
+        return new Promise(function (resolve, reject) {
             var client = new DbDriver(
-                process.env.SYBASE_HOST,
-                process.env.SYBASE_PORT,
-                process.env.SYBASE_DB_NAME,
-                process.env.SYBASE_USER_NAME,
-                process.env.SYBASE_PWD,
+                opts.SYBASE_HOST,
+                opts.SYBASE_PORT,
+                opts.SYBASE_DB_NAME,
+                opts.SYBASE_USER_NAME,
+                opts.SYBASE_PWD,
                 true,
-                __dirname+'/../node_modules/sybase/JavaSybaseLink/dist/JavaSybaseLink.jar');
+                opts.jarPath);
             client.connect(function (err) {
                 if (err) return console.log(err);
                 resolve(client);
             });
         })
-    },
-    destroy: function(client){
-        return new Promise(function(resolve){
+    }
+
+    function _destroy(client) {
+        return new Promise(function (resolve) {
             if (client.isConnected()) {
                 client.disconnect();
                 resolve();
             }
         })
     }
-};
 
-var DdPool = function (opts) {
-    const myPool = genericPool.createPool(factory, opts);
-    const pool = this;
-    pool.execute = function(sql,callback) {
-        const connInfo =  myPool.acquire();
-        connInfo.then(function(client) {
+
+
+    this.pool = genericPool.createPool({
+        create: _create,
+        destroy: _destroy
+    }, {
+        max: opts.max || 10,
+        min: opts.min || 2
+    });
+
+    function _exe(connect, sql, callback) {
+        connect.then(function (client) {
             client.query(sql, function (err, data) {
                 if (err) console.log(err);
-                myPool.release(client);
+                that.pool.release(client);
                 if (err && err.message.indexOf("JZ0CU") > -1) {
                     callback(null, data);
                 } else {
                     callback(err, data);
                 }
             })
-        });
+        })
+    }
+
+    this.execute = function (sql, callback) {
+        const connInfo = that.pool.acquire();
+        if (Promise) {
+            return new Promise(function (resolve, reject) {
+                _exe(connInfo, sql, function (err, data) {
+                    if (err) return reject(err);
+                    return resolve(data);
+                })
+            })
+        } else {
+            _exe(connInfo, sql, callback);
+        }
     }
 };
 
-module.exports = new DdPool({
-    max: 10, // maximum size of the pool
-    min: 2 // minimum size of the pool
-});
+module.exports = DBPool;

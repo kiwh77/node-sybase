@@ -1,6 +1,6 @@
 
 
-const Schema = require('./index').schema;
+const Schema = require('../index').schema;
 
 const ExempleSchema = new Schema('tablename', {
     id : Schema.TYPE_STRING,
