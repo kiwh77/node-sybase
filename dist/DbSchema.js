@@ -5,8 +5,10 @@
  */
 'use strict'
 var Conditions = require('./DbConditions')
-var pool = require('./DbPool')
-var Schema = function (tableName, schema) {
+
+var Schema = function (tableName, schema, pool) {
+
+  this.pool = pool;
   // SQL模板
   var SQL_INSERT_PATTERN = 'INSERT INTO ' + tableName + '($COLUMNS) VALUES($VALUES)'
   var SQL_UPDATE_PATTERN = 'update ' + tableName + ' set $VALUES WHERE 1=1 $CONDITIONS'
