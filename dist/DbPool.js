@@ -7,7 +7,7 @@
 'use strict';
 
 var genericPool = require('generic-pool');
-var DbDriver = require('sybase');
+var DbDriver = require('./sybase');
 
 function DBPool(opts) {
 

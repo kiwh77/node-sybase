@@ -1,6 +1,6 @@
 {
   "name": "node-sybase",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "sybasedb for node imitate MongoDB",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,6 @@
   "author": "huangbinglong & wuhao",
   "license": "ISC",
   "dependencies": {
-    "generic-pool": "^3.1.7",
-    "sybase": "^1.2.1"
+    "generic-pool": "^3.1.7"
   }
 }
