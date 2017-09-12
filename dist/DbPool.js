@@ -69,16 +69,13 @@ function DBPool(opts) {
 
     this.execute = function (sql, callback) {
         const connInfo = that.pool.acquire();
-        if (Promise) {
-            return new Promise(function (resolve, reject) {
-                _exe(connInfo, sql, function (err, data) {
-                    if (err) return reject(err);
-                    return resolve(data);
-                })
+        return new Promise(function (resolve, reject) {
+            _exe(connInfo, sql, function (err, data) {
+                callback && callback(err, data)
+                if (err) return reject(err);
+                return resolve(data);
             })
-        } else {
-            _exe(connInfo, sql, callback);
-        }
+        })
     }
 };
 
