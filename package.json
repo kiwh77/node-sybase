@@ -1,6 +1,6 @@
 {
   "name": "node-sybase",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "sybasedb for node imitate MongoDB",
   "main": "index.js",
   "scripts": {
