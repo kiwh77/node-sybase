@@ -3,9 +3,9 @@
 
 ## Node-sybase
   ```
-  模拟MongoDB的Schema模式，提供Schema
+    SyBase ORM for node like Sequelize.js
   ```
 
-## 使用
+## Use
 
-  参照 `exemple.js`   
+  See `exemple` 
