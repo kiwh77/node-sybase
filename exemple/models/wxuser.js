@@ -1,16 +1,16 @@
 
 
-const Sequelize = require('../db')
+const SyBase = require('../db')
 
 module.exports = () => {
-  const { STRING, INTEGER, DATE, DECIMAL } = Sequelize
+  const { STRING, INTEGER, DATE, DECIMAL } = SyBase
 
-  return Sequelize.define('WXUser', {
+  return SyBase.define('WXUser', {
     id: {
       type: INTEGER,
       allowNull: false,
       primaryKey: true,
-      autoInc : true
+      autoInc: true
     },
     openid: {
       type: STRING
@@ -33,7 +33,7 @@ module.exports = () => {
     },
     regdate: {
       type: DATE,
-      defaultValue: function(){
+      defaultValue: function () {
         return new Date()
       }
     },
