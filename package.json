@@ -1,8 +1,8 @@
 {
   "name": "node-sybase",
-  "version": "1.0.8",
-  "description": "sybasedb for node imitate MongoDB",
-  "main": "index.js",
+  "version": "1.1.0",
+  "description": "sybasedb for node with pool and Multi DB",
+  "main": "./dist/node_sybase.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,14 +10,17 @@
     "sybase",
     "dbsybase"
   ],
-  "repository" : {
+  "repository": {
     "type": "git",
-    "location": "https://github.com/kiwh77/node-sybase.git" 
+    "location": "https://github.com/kiwh77/node-sybase.git"
   },
   "author": "huangbinglong & wuhao",
   "license": "ISC",
   "dependencies": {
+    "JSONStream": "latest",
     "generic-pool": "^3.1.7",
-    "JSONStream": "latest"    
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "validator": "^9.0.0"
   }
 }
