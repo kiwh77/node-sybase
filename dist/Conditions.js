@@ -59,7 +59,7 @@ class Condition {
       if (field.autoInc) continue
 
       let headleValue = Format.tranfrom(type, value)
-      if (!field.allowNull && !headleValue && headleValue !== 0) {
+      if (!field.allowNull && !headleValue) {
         if (field.defaultValue) {
           const dvtype = typeof field.defaultValue
           headleValue = Format.tranfrom(dvtype, field.defaultValue)

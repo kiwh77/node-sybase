@@ -4,7 +4,7 @@ const SyBase = require('../db')
 
 module.exports = () => {
   const { STRING, INTEGER, DATE, DECIMAL } = SyBase
-
+  
   return SyBase.define('WXUser', {
     id: {
       type: INTEGER,

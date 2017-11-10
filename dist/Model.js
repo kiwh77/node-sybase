@@ -102,7 +102,7 @@ class Model {
   create (params, needQuery) {
     let keys = Object.keys(params)
     for (const key in this.fields) {
-      if (keys.indexOf(key) === -1 && this.fields[key].defaultValue) params[key] = this.fields[key].defaultValue 
+      if (keys.indexOf(key) === -1 && this.fields[key].defaultValue !== undefined) params[key] = this.fields[key].defaultValue 
     }
     keys = Object.keys(params)
 

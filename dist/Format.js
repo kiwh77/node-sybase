@@ -84,7 +84,7 @@ Format.INTEGER = 'INTEGER'
 Format.DATE = 'DATE'
 Format.DECIMAL = 'DECIMAL'
 
-Format.DATE_FORMAT = 'YYYY-MM-DD hh:mm:ss.SSS'
+Format.DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss.SSS'
 
 module.exports = Format
 module.exports.default = Format
