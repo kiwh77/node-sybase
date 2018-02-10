@@ -52,7 +52,7 @@ class SyBase {
   }
 
   //记录模型文件
-  use(path){
+  use(path, app){
     //判断路径是否存在
      if(!fs.existsSync(path)) throw new Error(`models path ${path} not exists!`)
     //遍历文件文件夹，得到所有模型路径
@@ -61,7 +61,7 @@ class SyBase {
 
     //取出所有模型
     paths.forEach(mPath => {
-      const model = require(mPath)()
+      const model = require(mPath)(app)
       this.models[model.name] = model
     })
   }
