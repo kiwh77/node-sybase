@@ -62,6 +62,7 @@ class SyBase {
     //取出所有模型
     paths.forEach(mPath => {
       const model = require(mPath)(app)
+      if (this.DBPools && this.DBPools.main) model.by(this.DBPools.main)
       this.models[model.name] = model
     })
   }
