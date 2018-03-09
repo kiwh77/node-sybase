@@ -48,6 +48,8 @@ class SyBase {
   //执行sql
   exec (sql, pool) {
     if (typeof pool === 'string') pool = this.DBPools[pool]
+    if (!pool) pool = this.DBPools.main
+    if (!pool) throw new Error('SyBase not found any DB pool')
     return pool.execute(sql)
   }
 
