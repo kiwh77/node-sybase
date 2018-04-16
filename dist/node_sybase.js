@@ -1,5 +1,4 @@
 
-
 const DBPool = require('./Pool')
 const Model = require('./Model')
 const Utils = require('./Utils')
@@ -38,7 +37,12 @@ class SyBase {
       this.DBPools[info.name] = pool
     })
   }
-
+  // 新增数据连接池
+  addPool(dbinfo) {
+    const name = dbinfo.name || this.DBPools.length
+    const pool = new DBPool(dbinfo)
+    this.DBPools[name] = pool
+  }
   //定义模型
   define (name, attrs, tableinfos) {
     const model = new Model(name, attrs, tableinfos)
@@ -68,6 +72,7 @@ class SyBase {
       this.models[model.name] = model
     })
   }
+
 }
 
 SyBase.prototype.STRING = Format.STRING

@@ -13,7 +13,7 @@ const CRUD = () => {
       headurl: 'http://www.baidu.com/favicon',
       cardno: '90000011',
       wxname: 110
-    })
+    }, true)
     .then(res => {
       console.info('------- Created ', res)
       return SyBase.models.WXUser.findByID(res.id)

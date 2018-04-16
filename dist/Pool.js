@@ -19,7 +19,6 @@ const DbDriver = require('./sybase');
  *       }
  */
 class DBPool {
-
   constructor(opts) {
     if (!opts.host || !opts.port) {
       throw new Error('Sybase DB params lacked!')

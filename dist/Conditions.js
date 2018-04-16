@@ -73,8 +73,8 @@ class Condition {
     return this
   }
 
-  field (fields) {
-    this.sql += ` ${this.joinFields(fields)}`
+  field (fields, filterFields) {
+    this.sql += ` ${this.joinFields(fields, filterFields)}`
     return this
   }
 
@@ -119,11 +119,13 @@ class Condition {
    * 拼接字段，默认拼接当前模型的所有字段
    * 
    * @param {any} fields 字段
+   * @param {Array} filterFields 需要查询的字段名
    * @returns 以,连接的字段名
    * @memberof Condition
    */
-  joinFields (fields) {
+  joinFields (fields, filterFields) {
     fields = fields || this.fields
+    filterFields = filterFields && (filterFields instanceof Array) && filterFields.length>0 ? filterFields : Object.keys(this.fields)
     let keys;
     if (Array.isArray(fields)) {
       keys = fields
@@ -132,7 +134,7 @@ class Condition {
     }
     keys.sort((a, b) => a > b)
     return keys.filter(fieldname => {
-      return fieldname
+      return fieldname && filterFields.some(name => name === fieldname)
     }).join(',')
   }
 

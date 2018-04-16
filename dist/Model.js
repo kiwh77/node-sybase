@@ -30,12 +30,13 @@ class Model {
     }
   }
   
-  findOne (where) {
+  findOne (where, condition) {
     return new Promise((resolve, reject) => {
+      const { fields = [] } = condition || {}
       let sql
       try {
         where = where || {}
-        sql = this.condition.select().sub('TOP 1').field().from().where(where).toSql()
+        sql = this.condition.select().sub('TOP 1').field(this.fields, fields).from().where(where).toSql()
       } catch (e) {
         return reject(e.message)
       }
@@ -46,12 +47,14 @@ class Model {
     })
   }
 
-  findAll (where, page) {
+  // TODO:查询时支持分页
+  findAll (where, condition) {
     return new Promise((resolve, reject) => {
+      const { fields = [], page } = condition || {}
       let sql
       try {
         where = where || {}
-        sql = this.condition.select().field().from().where(where).toSql()
+        sql = this.condition.select().field(this.fields, fields).from().where(where).toSql()
       } catch (e) {
         return reject(e.message)
       }
@@ -59,9 +62,10 @@ class Model {
     })
   }
 
-  findByID (id) {
+  findByID (id, condition) {
     return new Promise((resolve, reject) => {
       let sql, where={}
+      const { fields = [] } = condition || {}
       try {
         for (let key in this.fields) {
           const value = this.fields[key]
@@ -69,7 +73,7 @@ class Model {
             where[key] = id;
           }
         }
-        sql = this.condition.select().field().from().where(where).toSql()
+        sql = this.condition.select().field(this.fields, fields).from().where(where).toSql()
       } catch (e) {
         return reject(e.message)
       }
@@ -114,12 +118,16 @@ class Model {
         return reject(e.message)
       }
       this.execSql(sql).then(res => {
-        // 取出主键，如果没有则使用参数查询
-        const primaryField = this.getPrimaryKey()
-        if (primaryField && params[primaryField.key]) {
-          this.findByID(Format.tranfrom(primaryField.type, params[primaryField.key])).then(resolve, reject)
-        }else {
-          this.findOne(this.getVerifyField(params)).then(resolve, reject)
+        if (needQuery) {
+          // 取出主键，如果没有则使用参数查询
+          const primaryField = this.getPrimaryKey()
+          if (primaryField && params[primaryField.key]) {
+            this.findByID(Format.tranfrom(primaryField.type, params[primaryField.key])).then(resolve, reject)
+          }else {
+            this.findOne(this.getVerifyField(params)).then(resolve, reject)
+          }
+        } else {
+          resolve(res)
         }
       }, reject)
     })
@@ -140,7 +148,7 @@ class Model {
   execSql (sql) {
     return new Promise((resolve, reject) => {
       this.pool.execute(sql).then((data) => {
-        this.cacheSql = null
+        this.cacheSql = sql
         return resolve(data)
       }, (error) => {
         this.cacheSql = null
@@ -169,7 +177,7 @@ class Model {
     const fields = Object.keys(this.fields)
     for (const key in params) {
       const fieldInfo = this.fields[key]
-      if (fields.indexOf(key) > -1 && fieldInfo && !fieldInfo.autoInc) {
+      if (fields.indexOf(key) > -1 && fieldInfo && !fieldInfo.autoInc && fieldInfo.type.toUpperCase() !== 'DATE') {
         result[key] = Format.tranfrom(fieldInfo.type, params[key])
       }
     }
