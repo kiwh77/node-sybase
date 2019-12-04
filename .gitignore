@@ -3,3 +3,4 @@ node_modules
 package-lock.json
 .vscode
 local_test
+exemple/db.js

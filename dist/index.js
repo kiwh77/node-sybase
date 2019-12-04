@@ -1,18 +1,23 @@
+/*
+ * @Author: Wuhao
+ * @Email: kiwh77@126.com
+ * @Date: 2017-09-29 10:29:02
+ * @LastEditTime: 2019-12-02 21:02:36
+ */
 
+const fs = require('fs')
+const path = require('path')
 const DBPool = require('./Pool')
 const Model = require('./Model')
-const Utils = require('./Utils')
 const Format = require('./Format')
-const fs = require('fs')
 
-
-const _readdir = function (path, contains) {
-  const names = fs.readdirSync(path)
+const _readdir = function (apath, contains) {
+  const names = fs.readdirSync(apath)
   names.forEach(name => {
-    const namepath = `${path}/${name}`
+    const namepath = path.join(apath, name)
     const namepathstat = fs.statSync(namepath)
     if (namepathstat.isDirectory()){
-      _readdir(namepathstat, contains)
+      _readdir(namepath, contains)
     }else {
       contains.push(namepath)
     }
@@ -51,7 +56,7 @@ class SyBase {
 
   //执行sql
   exec (sql, pool) {
-    if (typeof pool === 'string') pool = this.DBPools[pool]
+    if (typeof pool === 'string') pool = this.DBPools[pool] && this.DBPools[pool].pool
     if (!pool) pool = this.DBPools.main
     if (!pool) throw new Error('SyBase not found any DB pool')
     return pool.execute(sql)

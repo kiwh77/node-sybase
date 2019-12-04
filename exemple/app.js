@@ -1,7 +1,13 @@
-
+/*
+ * @Author: Wuhao
+ * @Email: kiwh77@126.com
+ * @Date: 2017-08-19 11:07:12
+ * @LastEditTime: 2019-12-02 18:22:41
+ */
 
 const SyBase = require('./db')
-SyBase.use(__dirname + '/models')
+const path = require('path')
+SyBase.use(path.join(__dirname, 'models')) 
 
 const CRUD = () => {
   SyBase.models.WXUser
@@ -34,7 +40,10 @@ const CRUD = () => {
       console.info('------- Updated :', res)
       return SyBase.models.WXUser.delete({ id: res.id })
     })
-    .then(CRUD)
+    .then(res => {
+      console.info('------- Deleted :', res)  
+    })
+    // .then(CRUD)
     .catch(err => {
       console.error('********* Error :', err)
       SyBase.models.WXUser.delete({ cardno: '90000011' })

@@ -1,3 +1,9 @@
+/*
+ * @Author: Wuhao
+ * @Email: kiwh77@126.com
+ * @Date: 2017-09-29 10:28:19
+ * @LastEditTime: 2019-12-02 20:58:15
+ */
 
 const genericPool = require('generic-pool');
 const DbDriver = require('./sybase');
@@ -16,7 +22,7 @@ const DbDriver = require('./sybase');
  *        max,
  *        min,
  *        name
- *       }
+ *      }
  */
 class DBPool {
   constructor(opts) {
@@ -55,9 +61,9 @@ class DBPool {
       create: _create,
       destroy: _destroy
     }, {
-        max: opts.max || 10,
-        min: opts.min || 2
-      });
+      max: opts.max || 10,
+      min: opts.min || 2
+    });
   }
 
   _exe (connect, sql, callback) {

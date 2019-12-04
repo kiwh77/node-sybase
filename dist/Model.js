@@ -1,8 +1,12 @@
-
+/*
+ * @Author: Wuhao
+ * @Email: kiwh77@126.com
+ * @Date: 2017-09-29 10:28:26
+ * @LastEditTime: 2019-12-02 21:34:12
+ */
 
 const Condition = require('./Conditions')
 const Format = require('./Format')
-
 
 /**
  * 对象模型类
@@ -15,10 +19,11 @@ const Format = require('./Format')
  */
 class Model {
 
-  constructor(name, fields, tableinfos, pool) {
+  constructor(name, fields, tableinfos = {}, pool) {
     this.name = name
     this.fields = fields
     this.tablename = tableinfos.tableName || tableinfos.tablename
+    this.tableinfos = tableinfos
     this.pool = pool
     this.condition = new Condition(fields, this.tablename)
     this.cacheSql = undefined
@@ -32,11 +37,13 @@ class Model {
   
   findOne (where, condition) {
     return new Promise((resolve, reject) => {
-      const { fields = [] } = condition || {}
+      const { fields = [], config = {} } = condition || {}
       let sql
+      if (config.rtrim === undefined && this.tableinfos.rtrim) config.rtrim = true
+      if (config.ltrim === undefined && this.tableinfos.ltrim) config.ltrim = true
       try {
         where = where || {}
-        sql = this.condition.select().sub('TOP 1').field(this.fields, fields).from().where(where).toSql()
+        sql = this.condition.select().sub('TOP 1').field(this.fields, fields, config).from().where(where).toSql()
       } catch (e) {
         return reject(e.message)
       }
@@ -50,11 +57,13 @@ class Model {
   // TODO:查询时支持分页
   findAll (where, condition) {
     return new Promise((resolve, reject) => {
-      const { fields = [], page } = condition || {}
+      const { fields = [], config = {} } = condition || {}
+      if (config.rtrim === undefined && this.tableinfos.rtrim) config.rtrim = true
+      if (config.ltrim === undefined && this.tableinfos.ltrim) config.ltrim = true
       let sql
       try {
         where = where || {}
-        sql = this.condition.select().field(this.fields, fields).from().where(where).toSql()
+        sql = this.condition.select().field(this.fields, fields, config).from().where(where).toSql()
       } catch (e) {
         return reject(e.message)
       }

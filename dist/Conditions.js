@@ -1,7 +1,5 @@
 
-const Utils = require('./Utils')
 const Format = require('./Format')
-
 class Condition {
 
   constructor(fields, tableName) {
@@ -73,8 +71,8 @@ class Condition {
     return this
   }
 
-  field (fields, filterFields) {
-    this.sql += ` ${this.joinFields(fields, filterFields)}`
+  field (fields, filterFields, config) {
+    this.sql += ` ${this.joinFields(fields, filterFields, config)}`
     return this
   }
 
@@ -120,22 +118,29 @@ class Condition {
    * 
    * @param {any} fields 字段
    * @param {Array} filterFields 需要查询的字段名
+   * @param {Object} config 配置，rtrim, ltrim: 给字符串key加上trim
    * @returns 以,连接的字段名
    * @memberof Condition
    */
-  joinFields (fields, filterFields) {
+  joinFields (fields, filterFields, config = {}) {
     fields = fields || this.fields
-    filterFields = filterFields && (filterFields instanceof Array) && filterFields.length>0 ? filterFields : Object.keys(this.fields)
-    let keys;
-    if (Array.isArray(fields)) {
-      keys = fields
-    } else {
-      keys = Object.keys(fields)
-    }
-    keys.sort((a, b) => a > b)
-    return keys.filter(fieldname => {
-      return fieldname && filterFields.some(name => name === fieldname)
-    }).join(',')
+    const { rtrim, ltrim } = config
+    filterFields = filterFields && Array.isArray(filterFields) && filterFields.length > 0 ? filterFields : Object.keys(this.fields)
+    return (Array.isArray(fields) ? fields : Object.keys(this.fields)).sort((a, b) => a > b ? 1 : -1).map(fieldName => {
+      const field = fields[fieldName]
+      if (fieldName && filterFields.some(name => name === fieldName)) {
+        // 是否需要添加rtrim函数
+        if (field && (field === 'STRING' || field.type === 'STRING')) {
+          if (rtrim || field.rtrim) {
+            return 'rtrim(' + fieldName + ') as ' + fieldName
+          } else if (ltrim || field.ltrim) {
+            return 'ltrim(' + fieldName + ') as ' + fieldName
+          }
+        }
+        return fieldName
+      }
+      return false
+    }).join(', ');
   }
 
   /**

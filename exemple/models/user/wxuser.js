@@ -1,10 +1,16 @@
+/*
+ * @Author: Wuhao
+ * @Email: kiwh77@126.com
+ * @Date: 2017-09-29 16:32:42
+ * @LastEditTime: 2019-12-02 21:39:40
+ */
 
 
-const SyBase = require('../db')
+const SyBase = require('../../db')
 
 module.exports = () => {
   const { STRING, INTEGER, DATE, DECIMAL } = SyBase
-  
+
   return SyBase.define('WXUser', {
     id: {
       type: INTEGER,
@@ -38,6 +44,7 @@ module.exports = () => {
       }
     },
   }, {
-      tableName: 't_wxuser'
-    })
+    tableName: 't_wxuser',
+    rtrim: true
+  })
 }
