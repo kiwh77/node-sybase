@@ -2,7 +2,7 @@
  * @Author: Wuhao
  * @Email: kiwh77@126.com
  * @Date: 2017-09-30 10:04:45
- * @LastEditTime: 2019-12-02 17:47:06
+ * @LastEditTime: 2019-12-09 10:50:58
  */
 var spawn = require('child_process').spawn;
 var JSONStream = require('JSONStream');
@@ -10,7 +10,7 @@ var fs = require("fs");
 
 //FIXME: this is bad should be a way to expose this jar file in the npm package 
 //so that it can be called properly from parent packages.
-var PATH_TO_JAVA_BRIDGE1 = process.env.PWD + "/node_modules/node-sybase/sybase/JavaSybaseLink/dist/JavaSybaseLink.jar";
+var PATH_TO_JAVA_BRIDGE1 = process.env.PWD + "/node_modules/node-sybase/dist/sybase/JavaSybaseLink/dist/JavaSybaseLink.jar";
 var PATH_TO_JAVA_BRIDGE2 = __dirname + "/../JavaSybaseLink/dist/JavaSybaseLink.jar";
 
 function Sybase (host, port, dbname, username, password, logTiming, pathToJavaBridge) {

@@ -2,12 +2,12 @@
  * @Author: Wuhao
  * @Email: kiwh77@126.com
  * @Date: 2017-08-19 11:07:12
- * @LastEditTime: 2019-12-02 18:22:41
+ * @LastEditTime: 2019-12-09 10:50:32
  */
 
 const SyBase = require('./db')
 const path = require('path')
-SyBase.use(path.join(__dirname, 'models')) 
+SyBase.use(path.join(__dirname, 'models'))
 
 const CRUD = () => {
   SyBase.models.WXUser
